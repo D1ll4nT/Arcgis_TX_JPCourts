@@ -1,106 +1,95 @@
-# Precinct Lookup GUI
-This Python-based GUI application provides a unified way to query the Justice of the Peace (JP) precinct number for any address within the state of Texas. While individual county courts offer their own lookup tools, this application consolidates the search into a single, user-friendly interface.
+# Texas JP Court Finder
 
-Leveraging data contributed by PB06269_TXDPS on ArcGIS, this tool allows statewide JP court precinct lookups by simply entering an address.
+Address in, Justice of the Peace precinct and filing court out, with an honest confidence label.
 
-Important Note:
+Texas eviction suits must be filed in the JP precinct where the property sits. File in the wrong one and the case gets dismissed or transferred, costing the filer weeks. County lookup tools are inconsistent, cities straddle county lines, and filers routinely mislabel the county. This service resolves the precinct from authoritative geometry and says plainly when an address is too close to a boundary to call.
 
-While this tool offers broad coverage, please be aware that data accuracy can vary. For example, Dallas County has multiple courts within certain precincts, which the ArcGIS data may not fully reflect. However, the precinct number is accurately provided. You may need to consult the specific JP court's website for detailed information within that precinct.
+**Coverage:** Dallas, Tarrant, Collin, and Denton counties (the DFW "Core 4").
+**Stack:** TypeScript, Cloudflare Workers, D1 (SQLite), KV, Turf.js, Vitest.
+**Status:** Built for production filing work. 190 tests, typecheck clean.
 
+## How it resolves an address
 
----
+```
+POST /v1/precinct { street, city, zip, county }
+        │
+        ▼
+ 1. Normalize      USPS-style parse: number, directional, name, suffix, unit
+        │
+        ▼
+ 2. Locate         Tier 1: county appraisal-district parcel (ArcGIS), ~10 m
+                   Tier 2: Census TIGER street-segment interpolation (D1), ~150 m
+        │
+        ▼
+ 3. Resolve        Point-in-polygon against county JP precinct boundaries
+        │
+        ▼
+ 4. Certainty      Distance to nearest boundary vs. the locate method's error
+                   margin → "high" or "needs_verification" with both candidates
+        │
+        ▼
+ 5. Court          Precinct → court name, filing address, phone
+```
 
-## Overview
+Design choices that matter:
 
-Simplifies obtaining precinct information. Users enter an address, and the application:
+- **Abstain over guess.** When the location's error margin crosses a precinct line, the response returns both candidate precincts and courts instead of a confident wrong answer.
+- **Never trust the submitted county.** The resolver uses geometry, then flags `countyMismatch` (The Colony is Denton County; filers often say Dallas).
+- **Never widen what the filer typed.** ZIP relaxation and variant matching only fill in omitted components. An explicit `W` is never rewritten to `E`.
+- **Ambiguous twins resolve only when safe.** If `224 Dallas St` could be `E` or `W Dallas St`, it resolves only when every interpretation lands in the same precinct.
+- **Provenance on every answer.** Boundary snapshot date, TIGER year, locate method, precision, and a lookup ID for audit.
 
--   Geocodes the address.
--   Queries an ArcGIS REST API.
--   Displays precinct details.
+## Example response
 
----
+```json
+{
+  "result": {
+    "county": "tarrant", "precinct": "1",
+    "submittedCounty": "tarrant", "countyMismatch": false,
+    "court": { "courtName": "Tarrant County Justice of the Peace, Precinct 1", "filingAddress": "..." }
+  },
+  "match": { "normalizedAddress": "100 W WEATHERFORD ST, FORT WORTH, TX 76196", "method": "address-point", "precisionMeters": 10 },
+  "confidence": "high",
+  "provenance": { "boundaryAsOf": "...", "locationSource": "...", "tigerYear": 2024, "lookupId": "..." }
+}
+```
 
-## Features
+## Accuracy harness
 
--   **User-Friendly Interface:** Tkinter-based.
--   **Robust Geocoding:** Uses geopy's Nominatim.
--   **Precinct Data Retrieval:** Interfaces with ArcGIS REST API.
--   **Error Handling:** Detailed error messages and logging.
--   **Modular Code:** Clear separation of functions.
+`npm run calibrate` runs a corpus of public landmarks (city halls, courthouses) with independently checked answers, plus synthetic points placed on shared precinct boundaries. Every production miss becomes a permanent test case. The near-boundary points must come back `needs_verification`, never a confident single precinct.
 
----
+## Run it
 
-## Requirements
+```bash
+npm ci
+npm test               # unit + golden + calibration tests
+npm run typecheck
+npm run build:tiger    # build the street-segment geocoder DB (Census TIGER)
+npm run dev            # local Worker
+```
 
--   Python 3.x
--   **Dependencies:**
-    -   tkinter (included with Python)
-    -   requests
-    -   geopy
+To deploy, create a D1 database and KV namespace, put their IDs in `wrangler.jsonc`, load `data/geocoder/tiger.sql` into D1, and store a SHA-256 hashed API key in KV.
 
----
+## Repo map
 
-## Installation
+| Path | What |
+|---|---|
+| `src/geocode/` | Address normalizer and TIGER interpolation |
+| `src/parcel/` | Appraisal-district parcel lookups |
+| `src/resolve/` | Point-in-polygon resolver and certainty model |
+| `src/worker/` | HTTP API, auth (hashed keys, fail-closed), rate limit |
+| `scripts/` | Boundary, TIGER, and fixture build pipelines |
+| `data/` | Precinct boundaries (GeoJSON) and court directory |
+| `docs/design/` | Design specs written before each component was built |
 
-1.  **Clone the Repository:**
+## Data sources
 
-    ```bash
-    git clone https://github.com/D1ll4nT/Arcgis_TX_JPCourts.git
-    cd Arcgis_TX_JPCourts
-    ```
+County JP precinct boundaries from public county GIS services; U.S. Census TIGER/Line street segments; county appraisal-district parcel layers. Court directory compiled from county websites.
 
-2.  **Install Dependencies:**
+## Disclaimer
 
-    ```bash
-    pip install requests geopy
-    ```
+Informational tool, not legal advice. Confirm the precinct with the court before filing.
 
----
+## License
 
-## Usage
-
-1.  **Run the Script:**
-
-    ```bash
-    python3 arcgisJP.py
-    ```
-
-2.  **Enter Address Details:**
-    -   Street Address
-    -   City
-    -   State
-    -   ZIP Code
-
-3.  **Lookup Precinct:**
-    -   Click "Lookup Precinct".
-
----
-
-## Code Structure
-
--   **`query_precinct`:**
-    -   Geocodes address and queries ArcGIS API.
-    -   Returns precinct attributes.
-    -   Raises `ValueError` on failure.
--   **`get_precinct_info`:**
-    -   Collects address input, calls `query_precinct`, and displays results.
-    -   Displays errors via Tkinter dialogs.
--   **`setup_gui`:**
-    -   Sets up Tkinter window with input fields and lookup button.
--   **`main`:**
-    -   Initializes GUI and starts event loop.
-
----
-
-## Contributing
-
-1.  Fork the repository.
-2.  Create a feature branch.
-3.  Ensure well-documented code.
-4.  Submit a pull request.
-
----
-
-## Support
-
-Open an issue on GitHub.
+MIT

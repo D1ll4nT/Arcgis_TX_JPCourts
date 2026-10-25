@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.dev.vars.*
+dist/
+
+# Secrets & local config
+*.local
+.claude/settings.local.json
+.env
+.env.*
+
+# Local session memory (machine-local, not project source)
+.remember/
+
+# Private client data (PII) — never commit. Real case exports stay local-only.
+data/private/
+*-cases-*.csv
+*-cases-*.xlsx
+
+# Geocoder generated bulk data (large; regenerate via `npm run build:tiger`, load into D1 at deploy)
+data/geocoder/tiger.sql
+data/geocoder/tiger.db
+data/geocoder/.tmp/
+
+# OS / editor
+.DS_Store
+*.log

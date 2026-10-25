@@ -1,0 +1,10 @@
+{
+  "name": "texas-jp-court-finder",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2025-01-01",
+  "assets": { "directory": "./data/boundaries", "binding": "ASSETS" },
+  "d1_databases": [{ "binding": "DB", "database_name": "jp-precinct", "database_id": "<YOUR_D1_DATABASE_ID>" }],
+  "kv_namespaces": [{ "binding": "KEYS", "id": "<YOUR_KV_NAMESPACE_ID>" }],
+  "ratelimits": [{ "name": "RL", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } }],
+  "analytics_engine_datasets": [{ "binding": "AE", "dataset": "jp_precinct_lookups" }]
+}

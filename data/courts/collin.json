@@ -1,0 +1,12 @@
+{
+  "county": "collin",
+  "verified": false,
+  "verifiedAt": null,
+  "verifiedBy": null,
+  "courts": {
+    "1": { "courtName": "Collin County Justice of the Peace, Precinct 1", "places": [], "filingAddress": "2300 Bloomdale Rd., McKinney, TX 75071", "mailingAddress": "", "phone": "(972) 548-4125", "efilePortal": "https://efile.txcourts.gov", "ocaLocationId": "", "source": "https://www.collincountytx.gov/Courts/Justices-Peace/Justice-Precinct-1" },
+    "2": { "courtName": "Collin County Justice of the Peace, Precinct 2", "places": [], "filingAddress": "1025 S. State Highway 78, Lavon, TX 75166", "mailingAddress": "", "phone": "(972) 547-1880", "efilePortal": "https://efile.txcourts.gov", "ocaLocationId": "", "source": "https://www.collincountytx.gov/Courts/Justices-Peace/Justice-Precinct-2" },
+    "3": { "courtName": "Collin County Justice of the Peace, Precinct 3", "places": [], "filingAddress": "920 E. Park Blvd., Plano, TX 75074", "mailingAddress": "", "phone": "(972) 424-1460", "efilePortal": "https://efile.txcourts.gov", "ocaLocationId": "", "source": "https://www.collincountytx.gov/Courts/Justices-Peace/Justice-Precinct-3" },
+    "4": { "courtName": "Collin County Justice of the Peace, Precinct 4", "places": [], "filingAddress": "8585 John Wesley Dr., Frisco, TX 75034", "mailingAddress": "", "phone": "(972) 731-7300", "efilePortal": "https://efile.txcourts.gov", "ocaLocationId": "", "source": "https://www.collincountytx.gov/Courts/Justices-Peace/Justice-Precinct-4" }
+  }
+}

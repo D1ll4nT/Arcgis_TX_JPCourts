@@ -1,0 +1,96 @@
+[
+  {
+    "label": "dallas-city-hall",
+    "lon": -96.7969,
+    "lat": 32.7763,
+    "expectedCounty": "dallas",
+    "expectedPrecinct": "1"
+  },
+  {
+    "label": "dallas-mesquite-city-hall",
+    "lon": -96.5995,
+    "lat": 32.7695,
+    "expectedCounty": "dallas",
+    "expectedPrecinct": "2"
+  },
+  {
+    "label": "dallas-desoto-town-center",
+    "lon": -96.8569,
+    "lat": 32.5896,
+    "expectedCounty": "dallas",
+    "expectedPrecinct": "1"
+  },
+  {
+    "label": "dallas-garland-city-hall",
+    "lon": -96.6363,
+    "lat": 32.9128,
+    "expectedCounty": "dallas",
+    "expectedPrecinct": "2"
+  },
+  {
+    "label": "tarrant-county-courthouse",
+    "lon": -97.3326,
+    "lat": 32.7569,
+    "expectedCounty": "tarrant",
+    "expectedPrecinct": "1"
+  },
+  {
+    "label": "tarrant-arlington-city-hall",
+    "lon": -97.1078,
+    "lat": 32.7364,
+    "expectedCounty": "tarrant",
+    "expectedPrecinct": "2"
+  },
+  {
+    "label": "tarrant-mansfield-city-hall",
+    "lon": -97.1225,
+    "lat": 32.5636,
+    "expectedCounty": "tarrant",
+    "expectedPrecinct": "7"
+  },
+  {
+    "label": "collin-wylie-city-hall",
+    "lon": -96.528,
+    "lat": 33.0349,
+    "expectedCounty": "collin",
+    "expectedPrecinct": "3"
+  },
+  {
+    "label": "collin-county-courthouse",
+    "lon": -96.6366,
+    "lat": 33.2195,
+    "expectedCounty": "collin",
+    "expectedPrecinct": "1"
+  },
+  {
+    "label": "denton-county-courthouse",
+    "lon": -97.1331,
+    "lat": 33.2148,
+    "expectedCounty": "denton",
+    "expectedPrecinct": "1"
+  },
+  {
+    "label": "denton-the-colony-city-hall",
+    "lon": -96.8856,
+    "lat": 33.0898,
+    "expectedCounty": "denton",
+    "expectedPrecinct": "2",
+    "note": "The Colony is Denton County; case data often mislabels it Dallas."
+  },
+  {
+    "label": "grandprairie-city-hall-straddle",
+    "lon": -96.9977,
+    "lat": 32.7457,
+    "expectedCounty": "dallas",
+    "expectedPrecinct": "4",
+    "note": "Grand Prairie straddles Dallas/Tarrant; commit whatever the boundary resolves to."
+  },
+  {
+    "label": "outside-core4-rockwall-courthouse",
+    "lon": -96.4527,
+    "lat": 32.9097,
+    "expectedCounty": null,
+    "expectedPrecinct": null,
+    "note": "Rockwall County: outside Core 4, expect null (HTTP 404)."
+  }
+]

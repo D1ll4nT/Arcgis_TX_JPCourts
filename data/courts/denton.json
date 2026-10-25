@@ -1,0 +1,14 @@
+{
+  "county": "denton",
+  "verified": false,
+  "verifiedAt": null,
+  "verifiedBy": null,
+  "courts": {
+    "1": { "courtName": "Denton County Justice of the Peace, Precinct 1", "places": [], "filingAddress": "1 Courthouse Drive, Suite 1100, Denton, TX 76208", "mailingAddress": "", "phone": "940-349-3170", "efilePortal": "https://efiletx.tylertech.cloud/OfsEfsp/ui/landing", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/481/Justice-of-the-Peace-Precinct-1" },
+    "2": { "courtName": "Denton County Justice of the Peace, Precinct 2", "places": [], "filingAddress": "Frisco Government Center, 5533 FM 423, Suite 901, Frisco, TX 75036-8975", "mailingAddress": "", "phone": "972-434-7200", "efilePortal": "https://efiletx.tylertech.cloud/OfsEfsp/ui/landing", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/482/Justice-of-the-Peace-Precinct-2" },
+    "3": { "courtName": "Denton County Justice of the Peace, Precinct 3", "places": [], "filingAddress": "400 N Valley Parkway, Suite 2012, Lewisville, TX 75067-3530", "mailingAddress": "", "phone": "972-434-4750", "efilePortal": "https://www.efiletexas.gov/", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/483/Justice-of-the-Peace-Precinct-3" },
+    "4": { "courtName": "Denton County Justice of the Peace, Precinct 4", "places": [], "filingAddress": "Southwest Courthouse, 6200 Canyon Falls Drive, Suite 101, Flower Mound, TX 76226", "mailingAddress": "", "phone": "972-434-3910", "efilePortal": "https://www.efiletexas.gov/", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/484/Justice-of-the-Peace-Precinct-4" },
+    "5": { "courtName": "Denton County Justice of the Peace, Precinct 5", "places": [], "filingAddress": "Steven E. Copeland Government Center, 1400 FM 424, Suite 124, Cross Roads, TX 76227-7284", "mailingAddress": "", "phone": "940-349-3460", "efilePortal": "https://www.efiletexas.gov/", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/486/Justice-of-the-Peace-Precinct-5" },
+    "6": { "courtName": "Denton County Justice of the Peace, Precinct 6", "places": [], "filingAddress": "Sandy Jacobs Government Center, 1029 W Rosemeade Parkway, Carrollton, TX 75007-6251", "mailingAddress": "", "phone": "972-434-7100", "efilePortal": "https://www.efiletexas.gov/", "ocaLocationId": "", "source": "https://www.dentoncounty.gov/487/Justice-of-the-Peace-Precinct-6" }
+  }
+}

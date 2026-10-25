@@ -1,0 +1,38 @@
+[
+  {
+    "county": "dallas",
+    "sourceUrl": "https://services3.arcgis.com/zqe2kwz79KUqUvxC/arcgis/rest/services/JP/FeatureServer/0",
+    "precinctField": "DISTRICT",
+    "fetchedAt": "2026-06-25T12:19:59.489Z",
+    "featureCount": 5,
+    "snapshotHash": "sha256:046b79437d1b1389305f509bac75a8a57ed132a9fc376ea44bc205b8b498e3af",
+    "nativeWkid": 102100
+  },
+  {
+    "county": "tarrant",
+    "sourceUrl": "https://mapit.tarrantcounty.com/arcgis/rest/services/Dynamic/JusticeOfThePeace/MapServer/0",
+    "precinctField": "JP",
+    "fetchedAt": "2026-06-25T12:20:03.851Z",
+    "featureCount": 8,
+    "snapshotHash": "sha256:6592f408b5d926fa082b3cd55bfbe273f4e2377e098a4dd0d90eea45334444f6",
+    "nativeWkid": 2276
+  },
+  {
+    "county": "collin",
+    "sourceUrl": "https://maps.collincountytx.gov/server/rest/services/Election/Find_Elected_Representative/MapServer/1",
+    "precinctField": "name",
+    "fetchedAt": "2026-06-25T12:20:07.854Z",
+    "featureCount": 4,
+    "snapshotHash": "sha256:862b20755d56f0d8fcc5be02b7f7768872d61615c3a419d2a41f6864317842d5",
+    "nativeWkid": 3857
+  },
+  {
+    "county": "denton",
+    "sourceUrl": "https://gis.dentoncounty.gov/arcgis/rest/services/PoliticalBoundaries_GC/MapServer/5",
+    "precinctField": "JP_C",
+    "fetchedAt": "2026-06-25T12:20:08.741Z",
+    "featureCount": 6,
+    "snapshotHash": "sha256:3873bf4f185804f9b0dca5b5dde50874ed6831556875107b7b4ffc78f68f765f",
+    "nativeWkid": 2276
+  }
+]

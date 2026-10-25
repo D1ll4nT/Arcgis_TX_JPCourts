@@ -1,0 +1,23 @@
+{
+  "tigerYear": "2024",
+  "generatedRows": 396865,
+  "counties": [
+    {
+      "county": "dallas",
+      "rowCount": 140957
+    },
+    {
+      "county": "tarrant",
+      "rowCount": 139753
+    },
+    {
+      "county": "collin",
+      "rowCount": 63625
+    },
+    {
+      "county": "denton",
+      "rowCount": 52530
+    }
+  ],
+  "contentHash": "sha256:9dac034c05745cd0bfb9b935105d42836d8a4d07e50e83b139996be501699d71"
+}

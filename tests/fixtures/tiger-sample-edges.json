@@ -1,0 +1,20 @@
+[
+  {
+    "fullName": "Church Rd", "roadFlag": true,
+    "lFromAdd": "9200", "lToAdd": "9298", "rFromAdd": "9201", "rToAdd": "9299",
+    "zipL": "75231", "zipR": "75231",
+    "start": [-96.732, 32.885], "end": [-96.730, 32.887]
+  },
+  {
+    "fullName": "N Field St", "roadFlag": true,
+    "lFromAdd": "1600", "lToAdd": "1698", "rFromAdd": "", "rToAdd": "",
+    "zipL": "75201", "zipR": null,
+    "start": [-96.808, 32.782], "end": [-96.808, 32.786]
+  },
+  {
+    "fullName": "Trinity River", "roadFlag": false,
+    "lFromAdd": "", "lToAdd": "", "rFromAdd": "", "rToAdd": "",
+    "zipL": null, "zipR": null,
+    "start": [-96.85, 32.77], "end": [-96.84, 32.76]
+  }
+]

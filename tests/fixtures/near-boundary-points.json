@@ -1,0 +1,50 @@
+[
+  {
+    "label": "dallas-near-boundary",
+    "county": "dallas",
+    "lon": -96.5209764492495,
+    "lat": 32.6937707328218,
+    "candidatePrecincts": [
+      "1",
+      "2"
+    ],
+    "expectedConfidence": "needs_verification",
+    "sharedBoundaryGapMeters": 0
+  },
+  {
+    "label": "tarrant-near-boundary",
+    "county": "tarrant",
+    "lon": -97.06964859650935,
+    "lat": 32.8370327363463,
+    "candidatePrecincts": [
+      "2",
+      "3"
+    ],
+    "expectedConfidence": "needs_verification",
+    "sharedBoundaryGapMeters": 0
+  },
+  {
+    "label": "collin-near-boundary",
+    "county": "collin",
+    "lon": -96.55169266054034,
+    "lat": 33.191238548128304,
+    "candidatePrecincts": [
+      "1",
+      "2"
+    ],
+    "expectedConfidence": "needs_verification",
+    "sharedBoundaryGapMeters": 0
+  },
+  {
+    "label": "denton-near-boundary",
+    "county": "denton",
+    "lon": -96.99358159535076,
+    "lat": 33.12359579325332,
+    "candidatePrecincts": [
+      "1",
+      "2"
+    ],
+    "expectedConfidence": "needs_verification",
+    "sharedBoundaryGapMeters": 0
+  }
+]
