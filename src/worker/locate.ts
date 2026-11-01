@@ -3,6 +3,7 @@ import { normalizeAddress } from "../geocode/normalize-address.js";
 import { geocode, type SegmentQuerier } from "../geocode/geocode.js";
 import { resolvePrecinct } from "../resolve/precinct-resolver.js";
 import { assessCertainty } from "../resolve/certainty.js";
+import { ringsOf } from "../geo/boundary-distance.js";
 import type { ParcelClient } from "../parcel/parcel-client.js";
 import { lookupCourt, lookupCandidateCourts } from "./courts-lookup.js";
 import type {
@@ -39,12 +40,16 @@ export type LocateOutcome =
 
 /** [minLon,minLat,maxLon,maxLat] of a precinct feature. */
 function bboxOf(f: PrecinctFeature): [number, number, number, number] {
-  let a = Infinity, b = Infinity, c = -Infinity, d = -Infinity;
-  const rings = f.geometry.type === "Polygon" ? f.geometry.coordinates : f.geometry.coordinates.flat();
-  for (const ring of rings) for (const [lon, lat] of ring as [number, number][]) {
-    if (lon < a) a = lon; if (lon > c) c = lon; if (lat < b) b = lat; if (lat > d) d = lat;
+  let minLon = Infinity, minLat = Infinity, maxLon = -Infinity, maxLat = -Infinity;
+  for (const ring of ringsOf(f.geometry)) {
+    for (const [lon = 0, lat = 0] of ring) {
+      if (lon < minLon) minLon = lon;
+      if (lon > maxLon) maxLon = lon;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    }
   }
-  return [a, b, c, d];
+  return [minLon, minLat, maxLon, maxLat];
 }
 
 /**
