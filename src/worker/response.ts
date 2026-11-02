@@ -1,9 +1,8 @@
 import type { LocateOutcome } from "./locate.js";
-import type { County } from "../types.js";
+import { COUNTIES } from "../types.js";
 
 const DISCLAIMER =
   "Automated venue determination for convenience; the filer is responsible for confirming the correct court. Court filing details are unverified until confirmed.";
-const SUPPORTED: County[] = ["dallas", "tarrant", "collin", "denton"];
 
 export interface ResponseMeta {
   lookupId: string;
@@ -24,7 +23,7 @@ export function toResponse(
         body: { error: { code: "not_located", message: "Could not locate the address; check spelling or add a ZIP.", reason: outcome.reason, countyHint: outcome.countyHint } },
       };
     case "out_of_area":
-      return { status: 404, body: { error: { code: "out_of_area", message: "Address is outside the supported counties.", supportedCounties: SUPPORTED } } };
+      return { status: 404, body: { error: { code: "out_of_area", message: "Address is outside the supported counties.", supportedCounties: COUNTIES } } };
     case "resolved": {
       const result: Record<string, unknown> = {
         county: outcome.county,
