@@ -19,6 +19,11 @@ const BOUNDARY_AS_OF = String((boundaryManifest as { fetchedAt: string }[])[0]?.
 const TIGER_YEAR = (geocoderManifest as { tigerYear: string }).tigerYear;
 const MAX_BODY = 4096;
 
+/** Minimal error envelope used by every non-200 path. */
+function errorJson(status: number, code: string, message: string): Response {
+  return json(status, { error: { code, message } });
+}
+
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 }
@@ -31,7 +36,7 @@ export default {
         return json(200, { ok: true, boundaryAsOf: BOUNDARY_AS_OF, tigerYear: TIGER_YEAR });
       }
 
-      if (!(await checkAuth(request, env.KEYS))) return json(401, { error: { code: "unauthorized", message: "Missing or invalid API key." } });
+      if (!(await checkAuth(request, env.KEYS))) return errorJson(401, "unauthorized", "Missing or invalid API key.");
 
       if (request.method === "GET" && url.pathname === "/v1/counties") {
         const counts = boundaryManifest as { county: string; featureCount: number }[];
@@ -42,27 +47,16 @@ export default {
       }
 
       if (url.pathname === "/v1/precinct") {
-        if (request.method !== "POST") return json(405, { error: { code: "method_not_allowed", message: "Use POST." } });
+        if (request.method !== "POST") return errorJson(405, "method_not_allowed", "Use POST.");
 
         const raw = await request.text();
-        if (new TextEncoder().encode(raw).length > MAX_BODY) return json(400, { error: { code: "bad_input", message: "Request body too large." } });
-        let input: RawAddressInput;
-        try {
-          const parsed = JSON.parse(raw) as Record<string, unknown>;
-          if (typeof parsed !== "object" || parsed === null) throw new Error("not an object");
-          input = {
-            street: typeof parsed["street"] === "string" ? parsed["street"] : "",
-            city: typeof parsed["city"] === "string" ? parsed["city"] : "",
-            zip: typeof parsed["zip"] === "string" ? parsed["zip"] : "",
-            county: typeof parsed["county"] === "string" ? parsed["county"] : "",
-          };
-        } catch {
-          return json(400, { error: { code: "bad_input", message: "Body must be JSON with string fields." } });
-        }
+        if (new TextEncoder().encode(raw).length > MAX_BODY) return errorJson(400, "bad_input", "Request body too large.");
+        const input = parseRawAddressInput(raw);
+        if (input === null) return errorJson(400, "bad_input", "Body must be JSON with string fields.");
 
         const keyHash = await sha256Hex(presentedKeyFor(request));
         const { success } = await env.RL.limit({ key: keyHash });
-        if (!success) return json(429, { error: { code: "rate_limited", message: "Too many requests." } });
+        if (!success) return errorJson(429, "rate_limited", "Too many requests.");
 
         const boundaries = await loadBoundaries(env.ASSETS);
         const outcome = await locate(input, {
@@ -86,7 +80,7 @@ export default {
         return json(status, body);
       }
 
-      return json(404, { error: { code: "not_found", message: "Unknown endpoint." } });
+      return errorJson(404, "not_found", "Unknown endpoint.");
     } catch (err) {
       // Log the error class + message + stack so 503s are diagnosable in
       // `wrangler tail` / observability. A swallowed 503 is a silent failure.
@@ -96,10 +90,23 @@ export default {
         "[v1/precinct] unhandled error:",
         err instanceof Error ? `${err.name}: ${err.message}\n${err.stack ?? ""}` : String(err),
       );
-      return json(503, { error: { code: "unavailable", message: "Temporarily unavailable." } });
+      return errorJson(503, "unavailable", "Temporarily unavailable.");
     }
   },
 };
+
+/** Parse the request body into intake fields; null when it isn't a JSON object. */
+function parseRawAddressInput(raw: string): RawAddressInput | null {
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (typeof parsed !== "object" || parsed === null) return null;
+    const o = parsed as Record<string, unknown>;
+    const str = (v: unknown): string => (typeof v === "string" ? v : "");
+    return { street: str(o["street"]), city: str(o["city"]), zip: str(o["zip"]), county: str(o["county"]) };
+  } catch {
+    return null;
+  }
+}
 
 function presentedKeyFor(request: Request): string {
   const auth = request.headers.get("authorization");
